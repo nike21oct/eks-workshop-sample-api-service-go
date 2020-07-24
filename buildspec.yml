@@ -12,8 +12,6 @@ phases:
       - chmod 700 get_helm.sh
       - ./get_helm.sh
       - helm plugin install https://github.com/hypnoglow/helm-s3.git
-      - helm repo add my-helm-chart s3://my-helm-chart/charts
-      - helm repo list
   pre_build:
       commands:
         - TAG="$REPOSITORY_NAME.$REPOSITORY_BRANCH.$ENVIRONMENT_NAME.$(date +%Y-%m-%d.%H.%M.%S).$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
@@ -33,6 +31,9 @@ phases:
       - export AWS_SESSION_TOKEN="$(echo ${CREDENTIALS} | jq -r '.Credentials.SessionToken')"
       - export AWS_EXPIRATION=$(echo ${CREDENTIALS} | jq -r '.Credentials.Expiration')
       - aws eks update-kubeconfig --name $EKS_CLUSTER_NAME
+      - helm s3 init s3://my-helm-chart/charts
+      - helm repo add my-helm-chart s3://my-helm-chart/charts
+      - helm repo list
       - kubectl apply -f hello-k8s.yml
       - helm upgrade --install my-nginx-release my-helm-chart/my-nginx --version 0.1.1 --namespace helm-space
       - printf '[{"name":"hello-k8s","imageUri":"%s"}]' $REPOSITORY_URI:$TAG > build.json
