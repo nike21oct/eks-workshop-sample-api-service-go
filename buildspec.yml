@@ -32,7 +32,7 @@ phases:
       - export AWS_EXPIRATION=$(echo ${CREDENTIALS} | jq -r '.Credentials.Expiration')
       - aws eks update-kubeconfig --name $EKS_CLUSTER_NAME
       - helm s3 init s3://helm-my-chart/charts
-      - helm repo add helm-my-chart s3://my-helm-chart/charts
+      - helm repo add helmmmm-my-chart s3://my-helm-chart/charts
       - helm repo list
       - helm repo update
       - kubectl apply -f hello-k8s.yml
