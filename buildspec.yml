@@ -34,6 +34,7 @@ phases:
       - helm s3 init s3://my-helm-chart/charts
       - helm repo add my-helm-chart s3://my-helm-chart/charts
       - helm repo list
+      - helm repo update
       - kubectl apply -f hello-k8s.yml
       - helm upgrade --install my-nginx-release my-helm-chart/my-nginx --version 0.1.1 --namespace helm-space
       - printf '[{"name":"hello-k8s","imageUri":"%s"}]' $REPOSITORY_URI:$TAG > build.json
