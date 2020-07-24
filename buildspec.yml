@@ -36,7 +36,7 @@ phases:
       - helm repo list
       - helm repo update
       - kubectl apply -f hello-k8s.yml
-      - helm install my-nginxxx-release my-helm-chart/my-nginx --version 0.1.1 --namespace helm-space
+      - helm install --name my-releaseee stable/tomcat
       - printf '[{"name":"hello-k8s","imageUri":"%s"}]' $REPOSITORY_URI:$TAG > build.json
 artifacts:
   files: build.json
