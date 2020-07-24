@@ -11,7 +11,8 @@ phases:
       - curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 > get_helm.sh
       - chmod 700 get_helm.sh
       - ./get_helm.sh
-      - helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+      - helm plugin install https://github.com/hypnoglow/helm-s3.git
+      - helm repo add my-helm-charts s3://my-helm-chart/charts
       - helm repo list
   pre_build:
       commands:
@@ -33,7 +34,7 @@ phases:
       - export AWS_EXPIRATION=$(echo ${CREDENTIALS} | jq -r '.Credentials.Expiration')
       - aws eks update-kubeconfig --name $EKS_CLUSTER_NAME
       - kubectl apply -f hello-k8s.yml
+      - helm upgrade --install my-nginx-release my-helm-chart/my-nginx --version 0.1.1 --namespace helm-space
       - printf '[{"name":"hello-k8s","imageUri":"%s"}]' $REPOSITORY_URI:$TAG > build.json
-      - helm install my-release stable/tomcat
 artifacts:
   files: build.json
