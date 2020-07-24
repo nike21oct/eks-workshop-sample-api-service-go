@@ -31,13 +31,12 @@ phases:
       - export AWS_SESSION_TOKEN="$(echo ${CREDENTIALS} | jq -r '.Credentials.SessionToken')"
       - export AWS_EXPIRATION=$(echo ${CREDENTIALS} | jq -r '.Credentials.Expiration')
       - aws eks update-kubeconfig --name $EKS_CLUSTER_NAME
-      - helm s3 init s3://my-helm-chart/charts
       - helm repo add my-helm-chart s3://my-helm-chart/charts
       - helm repo list
       - helm repo update
-      - #kubectl apply -f hello-k8s.yml
+      - kubectl apply -f hello-k8s.yml
       - helm search repo my-nginx
-      - helm upgrade --install my-nginx-release my-helm-chart/my-nginx --version 0.1.0 --namespace helm-space
+      - helm upgrade --install nikhil my-helm-chart/my-nginx --version 0.1.0 --namespace helm-space
       - printf '[{"name":"hello-k8s","imageUri":"%s"}]' $REPOSITORY_URI:$TAG > build.json
 artifacts:
   files: build.json
