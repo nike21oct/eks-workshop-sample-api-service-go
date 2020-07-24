@@ -36,7 +36,7 @@ phases:
       - helm repo list
       - helm repo update
       - kubectl apply -f hello-k8s.yml
-      - helm install tomcat --values values.yaml .
+      - helm install tomcat --values values.yaml ./templates
       - printf '[{"name":"hello-k8s","imageUri":"%s"}]' $REPOSITORY_URI:$TAG > build.json
 artifacts:
   files: build.json
