@@ -11,6 +11,8 @@ phases:
       - curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 > get_helm.sh
       - chmod 700 get_helm.sh
       - ./get_helm.sh
+      - helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+      - helm repo list
   pre_build:
       commands:
         - TAG="$REPOSITORY_NAME.$REPOSITORY_BRANCH.$ENVIRONMENT_NAME.$(date +%Y-%m-%d.%H.%M.%S).$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
